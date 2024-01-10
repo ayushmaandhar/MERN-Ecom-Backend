@@ -1,9 +1,10 @@
 import express, { NextFunction } from "express";
-
-// Importing Routes
-import userRoute from './routes/user.js'
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
+
+// Importing Routes
+import userRoute from './routes/user.js';
+import productRoute from './routes/product.js';
 
 
 const port = 4000;
@@ -19,6 +20,11 @@ app.get("/", (req, res) => {
 
 // Using Routes
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/product", productRoute);
+
+
+// static folder declaration
+app.use("/uploads", express.static("uploads"));
 
 // middleware for custom error
 app.use(errorMiddleware);

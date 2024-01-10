@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import ErrorHandler from "../utils/utility-class.js";
 
 
 export interface NewUserRequestBody {
@@ -11,9 +10,39 @@ export interface NewUserRequestBody {
     dob: Date
 }
 
+export interface NewProductRequestBody {
+    name: string,
+    price: number,
+    stock: number,
+    category: string,
+    //photo: string,
+    _id: string,
+}
+
 export type ControllerType = (
-    req: Request<{}, {}, NewUserRequestBody>, 
+    req: Request<any, {}, any>, 
     res: Response, 
     next: NextFunction
 ) => Promise<Response<any, Record<string, any>>| void> ;
+
+
+export type SearchRequestQuery = {
+    search?: string,
+    price?: string,
+    category?: string,
+    sort?: string,
+    page?: string
+}
+
+
+export interface BaseQuery {
+    name?: {
+        $regex: string,
+        $options: string
+    },
+    price?: {
+        $lte: number
+    },
+    category?: string
+}
     

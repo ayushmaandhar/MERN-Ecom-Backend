@@ -2,7 +2,7 @@ import express from "express";
 import { deleteUser, getAllUsers, getUser, newUser } from "../controllers/user.js";
 import { adminOnly } from "../middlewares/auth.js";
 const app = express.Router();
-////////////////////// route: 'http://localhost:4000/api/v1/user'
+//////////////////// parent route: http://localhost:4000/api/v2/user
 // Post
 app.post("/new", newUser);
 // Get
