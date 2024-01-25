@@ -1,6 +1,7 @@
 import express, { NextFunction } from "express";
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
+import NodeCache from "node-cache";
 
 // Importing Routes
 import userRoute from './routes/user.js';
@@ -9,6 +10,9 @@ import productRoute from './routes/product.js';
 
 const port = 4000;
 connectDB();
+
+// initializing caching
+export const myCache = new NodeCache();
 
 const app = express();
 app.use(express.json());
