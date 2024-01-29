@@ -61,5 +61,10 @@ export const reduceStock = async(orderItems: orderItemsType[]) => {
         product.stock -= order.quantity;
         await product.save();
     }
+};
 
+export const calculatePercentage = (a: number, b: number) => {
+    if (b === 0) return Number(a*100);
+    const percent = ((a - b)/ b) * 100;
+    return Number(percent.toFixed(0));
 };
