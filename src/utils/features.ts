@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document, ObjectId } from "mongoose";
 import { InvalidateCacheProps, orderItemsType } from "../types/types.js";
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
@@ -63,13 +63,16 @@ export const reduceStock = async(orderItems: orderItemsType[]) => {
     }
 };
 
-export const calculatePercentage = (a: number, b: number) => {
-    if (b === 0) return Number(a*100);
-    const percent = ((a - b)/ b) * 100;
+export const calculatePercentage = (thisMonth: number, lastMonth: number) => {
+    if (lastMonth === 0) return Number(thisMonth*100);
+    const percent = (thisMonth/ lastMonth) * 100;
     return Number(percent.toFixed(0));
 };
 
-export const getInventories = async({categories, productsCount}: {categories: string[], productsCount: number}) => {
+export const getInventories = async( {categories, productsCount} : {
+    categories: string[], 
+    productsCount: number
+}) => {
     const categoriesCountPromise = categories.map((category) => Product.countDocuments({category}));
     const categoriesCount = await Promise.all(categoriesCountPromise);
     const categoryCount: Record<string, number>[] = [];
@@ -82,3 +85,28 @@ export const getInventories = async({categories, productsCount}: {categories: st
 
     return categoryCount;
 };
+
+export interface MyDoc extends Document{
+    createdAt: Date,
+}
+
+type chartDataProps = {
+    length: number,
+    docArr: MyDoc[],
+    today: Date
+} 
+
+export const getChartData = async( {length, docArr, today}: chartDataProps) => {
+    const data: number[] = new Array(length).fill(0);
+
+    docArr.forEach((doc) => {
+        const creationDate = doc.createdAt;
+        const monthDiff = (today.getMonth() - creationDate.getMonth() + 12) % 12;
+
+        if (monthDiff < length) {
+            data[length-monthDiff-1] += 1;
+        }
+    });
+    console.log(data)
+    return data;
+}
