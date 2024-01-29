@@ -15,7 +15,7 @@ export const adminOnly = TryCatch(async (req: Request, res: Response, next: Next
     if (!user) return next(new ErrorHandler("ID is incorrect", 401));
 
     if (user.role !== 'admin')
-        return next(new ErrorHandler("You can't access this route!", 403));
+        return next(new ErrorHandler("You can't access this route!", 403)); 
 
     next();
 

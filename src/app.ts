@@ -3,12 +3,15 @@ import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
 import {config} from "dotenv";
+import morgan from "morgan";
+
 
 // Importing Routes
 import userRoute from './routes/user.js';
 import productRoute from './routes/product.js';
 import orderRoute from './routes/orders.js';
-import morgan from "morgan";
+import paymentRoute from './routes/payment.js'
+
 
 
 // setting the path to env file
@@ -37,6 +40,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
+app.use("/api/v1/payment", paymentRoute); 
+
 
 
 

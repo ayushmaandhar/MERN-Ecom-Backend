@@ -4,7 +4,7 @@ import { allOrders, deleteOrder, getSingleOrder, myOrders, newOrder, processOrde
 
 
 const app = express.Router();
-//////////////////// parent route: http://localhost:4000/api/v2/order
+//////////////////// parent route: http://localhost:4000/api/v1/order
 
 // Post
 app.post("/new", newOrder);

@@ -4,7 +4,7 @@ import { deleteProduct, getAdminProducts, getAllCategories, getAllProducts, getL
 import { singleUpload } from "../middlewares/multer.js";
 
 const app = express.Router();
-//////////////////// parent route: http://localhost:4000/api/v2/product
+//////////////////// parent route: http://localhost:4000/api/v1/product
 
 //// admin Specific requests
 app.post("/new", adminOnly, singleUpload, newProduct);

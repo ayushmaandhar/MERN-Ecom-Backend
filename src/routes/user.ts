@@ -4,7 +4,7 @@ import { adminOnly } from "../middlewares/auth.js";
 
 
 const app = express.Router();
-//////////////////// parent route: http://localhost:4000/api/v2/user
+//////////////////// parent route: http://localhost:4000/api/v1/user
 
 // Post
 app.post("/new", newUser);
