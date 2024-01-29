@@ -142,7 +142,7 @@ export const getDashboardStats = TryCatch( async(req, res, next) => {
 
         const orderMonthCounts = new Array(6).fill(0);
         const orderMonthlyRevenue = new Array(6).fill(0);
-
+        // BELOW CAN ALSO BE DONE USING    getCharts() from features.js
         lastSixMonthOrders.forEach((order) => {
             const creationDate = order.createdAt;
             const monthDiff = (today.getMonth() - creationDate.getMonth() + 12) % 12;
@@ -302,7 +302,7 @@ export const getPieCharts = TryCatch( async(req, res, next) => {
 
 export const getBarCharts = TryCatch( async(req, res, next) => {
     let charts;
-    const key = "admin-bar-chart";
+    const key = "admin-bar-charts";
 
     if (myCache.has(key)) charts = JSON.parse(myCache.get(key) as string);
 
@@ -379,5 +379,57 @@ export const getBarCharts = TryCatch( async(req, res, next) => {
 
 
 export const getLineCharts = TryCatch( async(req, res, next) => {
+    let charts;
+    const key = "admin-line-charts";
+
+    if (myCache.has(key)) charts = JSON.parse(myCache.get(key) as string);
+
+    else {
+
+        const today = new Date();
+
+        const twelveMonthsAgo = new Date();
+        twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth()-12);
+
+        const baseQuery = {
+            createdAt: {
+                $gte: twelveMonthsAgo,
+                $lte: today
+            }
+        }
+
+        const [
+            twelveMonthProducts,
+            twelveMonthUsers,
+            twelveMonthOrders,
+
+        ] = await Promise.all([
+            Product.find(baseQuery).select("createdAt"),
+            User.find(baseQuery).select("createdAt"),
+            Order.find(baseQuery).select(["createdAt", "discount", "total"])
+        ]);
+
+
+        const productsCounts = getChartData({length: 12, today, docArr: twelveMonthProducts});
+        const usersCounts = getChartData({length: 12, today, docArr: twelveMonthUsers});
+        const discount = getChartData({length: 12, today, docArr: twelveMonthOrders, property: "discount"});
+        const revenue = getChartData({length: 12, today, docArr: twelveMonthOrders, property: "total"});
+
+
+        charts = {
+            users: usersCounts,
+            products: productsCounts,
+            discount,
+            revenue
+        };
+
+        myCache.set(key, JSON.stringify(charts));
+    }
+
+    return res.status(200).json({
+        success: true,
+        charts
+    });
+
 
 });
