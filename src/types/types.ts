@@ -50,6 +50,36 @@ export interface BaseQuery {
 export type InvalidateCacheProps = {
      product?: boolean,
      order?: boolean,
-     admin?: boolean
+     admin?: boolean,
+     userId?: string,
+     orderId?: string,
+     productId?: string | string[],
 }
     
+
+export type orderItemsType = {
+    name: string,
+    photo: string,
+    price: number,
+    quantity: number,
+    productId: string,
+}
+
+export type shoppingInfoType = {
+    address: string,
+    city: string,
+    state: string,
+    country: string,
+    pinCode: number,
+}
+
+export interface NewOrderRequestBody {
+    shippingInfo: shoppingInfoType,
+    user: string,
+    subTotal: number,
+    tax: number,
+    shippingCharges: number,
+    discount: number,
+    total: number,
+    orderItems: orderItemsType[]
+}
