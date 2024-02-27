@@ -10,7 +10,7 @@ export const createPaymentIntent = TryCatch( async(req, res, next) => {
 
     if (!amount) return next(new ErrorHandler("Please Enter the Amount", 400));
 
-    const paymentIntent = await stripe.paymentIntents.create({amount: Number(amount)*100, currency: "inr" })
+    const paymentIntent = await stripe.paymentIntents.create({amount: Number(amount)*100, currency: "inr", description: "testing" })
 
     return res.status(201).json({
         success: true,
@@ -25,7 +25,6 @@ export const newCoupon = TryCatch( async(req, res, next) => {
     const {coupon, amount} = req.body;
 
     if (!coupon || !amount) return next(new ErrorHandler("Please Enter Both Coupon and Amount", 400));
-
     await Coupon.create({coupon, amount});
 
     return res.status(201).json({
@@ -76,7 +75,7 @@ export const deleteCoupon = TryCatch(async (req, res, next) => {
 
     return res.status(200).json({
         success: true,
-        message: `Coupon ${coupon} Deleted Successfully!`
+        message: `Coupon ${coupon.value} Deleted Successfully!`
     });
 
 });

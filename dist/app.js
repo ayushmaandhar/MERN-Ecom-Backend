@@ -5,6 +5,7 @@ import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
 import Stripe from "stripe";
+import cors from "cors";
 // Importing Routes
 import userRoute from './routes/user.js';
 import productRoute from './routes/product.js';
@@ -27,6 +28,7 @@ export const myCache = new NodeCache();
 const app = express();
 app.use(express.json());
 app.use(morgan("dev")); // for dev use: to identify request types in terminal
+app.use(cors()); // for CORS 
 // general
 app.get("/", (req, res) => {
     res.send("API working on '/api/v1'");
