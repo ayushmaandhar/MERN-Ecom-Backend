@@ -7,7 +7,7 @@ const app = express.Router();
 //////////////////// parent route: http://localhost:4000/api/v1/product
 
 //// admin Specific requests
-app.post("/new", adminOnly, newProduct);
+app.post("/new", adminOnly, singleUpload, newProduct);
 app.get("/admin-products", adminOnly, getAdminProducts);
 
 
@@ -20,7 +20,7 @@ app.get("/all", getAllProducts); // search with filters
 // ProductId routes
 app.route("/:id")
 .get(getSingleProduct)
-.put(adminOnly, updateProduct)
+.put(adminOnly, singleUpload, updateProduct)
 .delete(adminOnly, deleteProduct);
  
 export default app;
