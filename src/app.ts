@@ -26,6 +26,7 @@ config({
 const port = process.env.PORT ?? 4000; 
 const mongo_uri = process.env.MONGO_URI ?? "";
 const stripe_key = process.env.STRIPE_KEY ?? "";
+const serverDomain = process.env.SERVER_DOMAIN ?? "";
 
 // establishing DB connection
 connectDB(mongo_uri);
@@ -61,5 +62,5 @@ app.use("/uploads", express.static("uploads"));
 app.use(errorMiddleware);
 
 app.listen(port, ()=>{
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on ${serverDomain}`);
 });
